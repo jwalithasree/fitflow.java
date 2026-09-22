@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - Adaptive Workout Recommendation Engine</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html">Dashboard</a></li>
+            <li><a href="/web/health.html">BMI & Health</a></li>
+            <li><a href="/web/hydration.html">Hydration</a></li>
+            <li><a href="/web/workout.html" class="active">Workouts</a></li>
+            <li><a href="/web/nutrition.html">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar">AR</div>
+            <span class="user-info-text">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Personalized Workout Recommendation Engine</h1>
+                <p class="page-subtitle">Polymorphic <code>WorkoutRoutine</code> subclasses selected dynamically by Java based on time, energy, and goals.</p>
+            </div>
+            <a href="/web/profile.html" class="btn btn-secondary">Edit Goal ⚙</a>
+        </div>
+
+        <!-- Configuration Bar: Duration & Energy Level -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="grid-2" style="margin-bottom: 0;">
+                <!-- Time Selector -->
+                <div>
+                    <label class="form-label">Available Workout Time</label>
+                    <div class="pill-group" id="time-pills">
+                        <div class="pill-option" data-time="10">10 min (Quick)</div>
+                        <div class="pill-option" data-time="20">20 min</div>
+                        <div class="pill-option active" data-time="30">30 min (Standard)</div>
+                        <div class="pill-option" data-time="45">45 min</div>
+                        <div class="pill-option" data-time="60">60 min (Full)</div>
+                    </div>
+                </div>
+
+                <!-- Energy Selector -->
+                <div>
+                    <label class="form-label">Current Energy Level</label>
+                    <div class="pill-group" id="energy-pills">
+                        <div class="pill-option" data-energy="LOW">Low (Restorative)</div>
+                        <div class="pill-option active" data-energy="MEDIUM">Medium (Balanced)</div>
+                        <div class="pill-option" data-energy="HIGH">High (Max Intensity)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="generateWorkoutPlan()">
+                    Generate Plan in Java ⚡
+                </button>
+            </div>
+        </div>
+
+        <!-- Generated Workout Plan Results Container -->
+        <div id="workout-result-container">
+            <!-- Routine Header Card -->
+            <div class="card glow-primary" style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <div style="display: flex; gap: 0.6rem; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="badge badge-normal" id="routine-type-badge">Strength & Hypertrophy</span>
+                            <span class="badge badge-underweight" id="routine-intensity-badge">High Resistance</span>
+                        </div>
+                        <h2 style="font-family: 'Outfit', sans-serif; font-size: 1.8rem; margin-bottom: 0.25rem;" id="routine-title">
+                            Total-Body Progressive Calisthenics
+                        </h2>
+                        <p style="color: var(--text-secondary); font-size: 0.92rem;" id="routine-summary">
+                            Generating routine from Java backend...
+                        </p>
+                    </div>
+
+                    <!-- Calorie Burn Box -->
+                    <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem 1.5rem; text-align: right;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Est. Energy Burn</span>
+                        <div style="font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800; color: var(--primary);" id="routine-calories">
+                            -- kcal
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--text-secondary);">Polymorphic MET equation</span>
+                    </div>
+                </div>
+
+                <!-- Warmup / Cooldown Tips -->
+                <div class="grid-2" style="margin: 1.5rem 0 0 0; background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: var(--radius-md);">
+                    <div>
+                        <strong style="color: var(--cyan); font-size: 0.85rem; text-transform: uppercase;">🔥 Warm-Up Protocol</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" id="routine-warmup">--</p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--purple); font-size: 0.85rem; text-transform: uppercase;">❄ Cool-Down Protocol</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;" id="routine-cooldown">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise List Section -->
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.4rem; margin-bottom: 1rem;">
+                Target Exercise Sequence (<span id="exercise-count">0</span> Exercises)
+            </h3>
+            <div id="exercise-list">
+                <!-- Populated dynamically via Java JSON response -->
+            </div>
+        </div>
+
+        <!-- Academic OOP Architecture Note -->
+        <div class="card" style="margin-top: 2.5rem; border-color: rgba(99, 102, 241, 0.3);">
+            <div class="card-header">
+                <span class="card-title">AOP Viva Defense: Polymorphism & Inheritance</span>
+                <div class="card-icon icon-purple">🎓</div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                The <code>WorkoutPlanner</code> instantiates concrete subclasses of <code>WorkoutRoutine</code> (e.g. <code>StrengthRoutine</code>, <code>CardioRoutine</code>, <code>HIITRoutine</code>, <code>FlexibilityRoutine</code>). Each subclass overrides <code>calculateEstimatedCaloriesBurned()</code> using task-specific Metabolic Equivalent of Task (MET) multipliers. Zero hardcoded routine data is embedded in HTML/JS.
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; Polymorphic Java Workout Engine</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        let selectedDuration = 30;
+        let selectedEnergy = 'MEDIUM';
+
+        // Setup Pill Click Handlers
+        document.querySelectorAll('#time-pills .pill-option').forEach(p => {
+            p.addEventListener('click', () => {
+                document.querySelectorAll('#time-pills .pill-option').forEach(x => x.classList.remove('active'));
+                p.classList.add('active');
+                selectedDuration = parseInt(p.getAttribute('data-time'));
+                generateWorkoutPlan();
+            });
+        });
+
+        document.querySelectorAll('#energy-pills .pill-option').forEach(p => {
+            p.addEventListener('click', () => {
+                document.querySelectorAll('#energy-pills .pill-option').forEach(x => x.classList.remove('active'));
+                p.classList.add('active');
+                selectedEnergy = p.getAttribute('data-energy');
+                generateWorkoutPlan();
+            });
+        });
+
+        async function generateWorkoutPlan() {
+            try {
+                const data = await apiCall(`/workout?duration=${selectedDuration}&energy=${selectedEnergy}`);
+                
+                document.getElementById('routine-title').textContent = data.routineName || data.title;
+                document.getElementById('routine-summary').textContent = data.summary;
+                document.getElementById('routine-type-badge').textContent = data.routineType || 'Custom Routine';
+                document.getElementById('routine-intensity-badge').textContent = data.intensityBadge || 'Standard';
+                document.getElementById('routine-calories').textContent = `${data.estimatedCaloriesBurned} kcal`;
+                document.getElementById('routine-warmup').textContent = data.warmUpTip || '3-5 minutes light joint circles.';
+                document.getElementById('routine-cooldown').textContent = data.coolDownTip || 'Passive stretches and hydration.';
+
+                const exList = document.getElementById('exercise-list');
+                exList.innerHTML = '';
+                
+                if (data.exercises && data.exercises.length > 0) {
+                    document.getElementById('exercise-count').textContent = data.exercises.length;
+                    data.exercises.forEach((ex, idx) => {
+                        const div = document.createElement('div');
+                        div.className = 'exercise-card';
+                        div.id = `ex-card-${idx}`;
+                        div.innerHTML = `
+                            <div class="exercise-header">
+                                <span class="exercise-name" id="ex-title-${idx}">${idx + 1}. ${ex.name}</span>
+                                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                    <span class="badge badge-normal">${ex.sets} sets × ${ex.repsOrDuration}</span>
+                                    <button class="btn btn-secondary btn-sm" id="ex-btn-${idx}" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;"
+                                            onclick="toggleExerciseDone(${idx}, '${ex.name.replace(/'/g, "\\'")}')">
+                                        Mark Done ✓
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="exercise-meta">
+                                <span class="badge badge-underweight">${ex.category}</span>
+                                <span class="badge badge-overweight">${ex.targetMuscle}</span>
+                            </div>
+                            <p class="exercise-instructions">💡 <strong>Technique:</strong> ${ex.instructions}</p>
+                        `;
+                        exList.appendChild(div);
+                    });
+                }
+            } catch (err) {
+                console.error('Error generating workout:', err);
+            }
+        }
+
+        function toggleExerciseDone(idx, name) {
+            const card = document.getElementById(`ex-card-${idx}`);
+            const btn = document.getElementById(`ex-btn-${idx}`);
+            const title = document.getElementById(`ex-title-${idx}`);
+
+            if (card.classList.contains('glow-primary')) {
+                card.classList.remove('glow-primary');
+                card.style.borderColor = 'var(--border-color)';
+                card.style.opacity = '1';
+                title.style.textDecoration = 'none';
+                btn.textContent = 'Mark Done ✓';
+                btn.className = 'btn btn-secondary btn-sm';
+            } else {
+                card.classList.add('glow-primary');
+                card.style.borderColor = 'var(--primary)';
+                card.style.opacity = '0.75';
+                title.style.textDecoration = 'line-through';
+                btn.textContent = 'Completed!';
+                btn.className = 'btn btn-primary btn-sm';
+                showToast(`Great work completing ${name}! 💪`, 'success');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', generateWorkoutPlan);
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - Nutrition & Macronutrient Blueprint</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html">Dashboard</a></li>
+            <li><a href="/web/health.html">BMI & Health</a></li>
+            <li><a href="/web/hydration.html">Hydration</a></li>
+            <li><a href="/web/workout.html">Workouts</a></li>
+            <li><a href="/web/nutrition.html" class="active">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar">AR</div>
+            <span class="user-info-text">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Nutritional Blueprint & Macro Targets</h1>
+                <p class="page-subtitle">Calculated dynamically in Java using the clinical Mifflin-St Jeor equation and goal-specific macronutrient partitioning.</p>
+            </div>
+            <a href="/web/profile.html" class="btn btn-secondary">Change Fitness Goal ⚙</a>
+        </div>
+
+        <!-- Caloric & Energy Target Hero Cards -->
+        <div class="grid-3">
+            <!-- Target Calories -->
+            <div class="card glow-primary">
+                <div class="card-header">
+                    <span class="card-title">Daily Calorie Target</span>
+                    <div class="card-icon icon-emerald">🎯</div>
+                </div>
+                <div class="stat-value">
+                    <span id="nutri-target-cal">--</span><span class="stat-unit">kcal</span>
+                </div>
+                <div class="stat-desc" id="nutri-goal-desc">Calibrated for your active fitness goal</div>
+            </div>
+
+            <!-- Maintenance TDEE -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Maintenance (TDEE)</span>
+                    <div class="card-icon icon-amber">⚖</div>
+                </div>
+                <div class="stat-value">
+                    <span id="nutri-maint-cal">--</span><span class="stat-unit">kcal</span>
+                </div>
+                <div class="stat-desc">Energy equilibrium expenditure</div>
+            </div>
+
+            <!-- Basal Metabolic Rate (BMR) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Basal Metabolism (BMR)</span>
+                    <div class="card-icon icon-purple">⚡</div>
+                </div>
+                <div class="stat-value">
+                    <span id="nutri-bmr-cal">--</span><span class="stat-unit">kcal</span>
+                </div>
+                <div class="stat-desc">Resting cellular consumption</div>
+            </div>
+        </div>
+
+        <!-- Macronutrient Breakdown Card -->
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="card-header">
+                <span class="card-title">Target Macronutrient Partitioning</span>
+                <div class="card-icon icon-cyan">📊</div>
+            </div>
+            <div class="grid-3" style="margin-bottom: 0;">
+                <!-- Protein -->
+                <div style="background: rgba(255, 255, 255, 0.02); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span style="font-weight: 700; color: #10b981;">Protein (4 kcal/g)</span>
+                        <span class="stat-value" style="font-size: 1.8rem; color: #10b981;" id="macro-p-val">-- g</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Tissue repair & muscle protein synthesis</p>
+                </div>
+
+                <!-- Carbohydrates -->
+                <div style="background: rgba(255, 255, 255, 0.02); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span style="font-weight: 700; color: #38bdf8;">Carbs (4 kcal/g)</span>
+                        <span class="stat-value" style="font-size: 1.8rem; color: #38bdf8;" id="macro-c-val">-- g</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Glycogen replenishment & cellular energy</p>
+                </div>
+
+                <!-- Dietary Fats -->
+                <div style="background: rgba(255, 255, 255, 0.02); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                        <span style="font-weight: 700; color: #f59e0b;">Fats (9 kcal/g)</span>
+                        <span class="stat-value" style="font-size: 1.8rem; color: #f59e0b;" id="macro-f-val">-- g</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Hormone production & joint health</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Food Groups & Meal Plan Container -->
+        <div class="grid-2">
+            <!-- Recommended Food Groups -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Optimal Food Choices</span>
+                    <div class="card-icon icon-emerald">🥦</div>
+                </div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;" id="foods-title">Goal-Specific Superfoods</h3>
+                <ul id="foods-list" style="list-style: none; display: flex; flex-direction: column; gap: 0.85rem;">
+                    <!-- Dynamically populated from Java -->
+                </ul>
+            </div>
+
+            <!-- Structured Meal Blueprint -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Structured Daily Meal Timing</span>
+                    <div class="card-icon icon-amber">🍽️</div>
+                </div>
+                <h3 style="font-size: 1.2rem; margin-bottom: 1rem;">Suggested Meal Schedule</h3>
+                <div id="meals-list" style="display: flex; flex-direction: column; gap: 0.85rem;">
+                    <!-- Dynamically populated from Java -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Evidence-Based Guidelines -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <span class="card-title">Nutritional Principles</span>
+                <div class="card-icon icon-purple">📖</div>
+            </div>
+            <div id="guidelines-list" style="display: flex; flex-direction: column; gap: 0.6rem; color: var(--text-secondary); font-size: 0.9rem;">
+                <!-- Populated from Java -->
+            </div>
+            <div style="margin-top: 1.25rem; padding: 0.75rem 1rem; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: var(--radius-sm); font-size: 0.8rem; color: #fcd34d;">
+                ⚠️ <strong>Academic Disclaimer:</strong> FitFlow provides algorithmic nutritional and caloric estimations for academic fitness demonstration. Not intended as clinical or medical prescription.
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; Java CalorieCalculator & NutritionPlanner</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadNutritionData() {
+            try {
+                // Fetch Calorie metrics
+                const calData = await apiCall('/calories');
+                document.getElementById('nutri-target-cal').textContent = calData.targetCalories.toLocaleString();
+                document.getElementById('nutri-maint-cal').textContent = calData.maintenanceCalories.toLocaleString();
+                document.getElementById('nutri-bmr-cal').textContent = calData.bmr.toLocaleString();
+                document.getElementById('nutri-goal-desc').textContent = `${calData.goal} (${calData.goalAdjustment >= 0 ? '+' : ''}${calData.goalAdjustment} kcal)`;
+
+                document.getElementById('macro-p-val').textContent = `${calData.proteinGrams} g`;
+                document.getElementById('macro-c-val').textContent = `${calData.carbGrams} g`;
+                document.getElementById('macro-f-val').textContent = `${calData.fatGrams} g`;
+
+                // Fetch tailored Nutrition plan
+                const nutriData = await apiCall('/nutrition');
+                document.getElementById('foods-title').textContent = `${nutriData.goal} Food Staples`;
+
+                const foodsList = document.getElementById('foods-list');
+                foodsList.innerHTML = '';
+                if (nutriData.primaryFoods) {
+                    nutriData.primaryFoods.forEach(food => {
+                        const li = document.createElement('li');
+                        li.style.cssText = 'padding: 0.65rem 0.9rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); font-size: 0.88rem;';
+                        li.innerHTML = `✓ ${food}`;
+                        foodsList.appendChild(li);
+                    });
+                }
+
+                const mealsList = document.getElementById('meals-list');
+                mealsList.innerHTML = '';
+                if (nutriData.mealPlan) {
+                    nutriData.mealPlan.forEach(meal => {
+                        const div = document.createElement('div');
+                        div.style.cssText = 'padding: 0.75rem 1rem; background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); border-left: 3px solid var(--primary); font-size: 0.88rem;';
+                        div.textContent = meal;
+                        mealsList.appendChild(div);
+                    });
+                }
+
+                const guideList = document.getElementById('guidelines-list');
+                guideList.innerHTML = '';
+                if (nutriData.guidelines) {
+                    nutriData.guidelines.forEach(g => {
+                        const p = document.createElement('p');
+                        p.innerHTML = `&bull; ${g}`;
+                        guideList.appendChild(p);
+                    });
+                }
+            } catch (err) {
+                console.error('Failed to load nutrition:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadNutritionData);
+    </script>
+</body>
+</html>

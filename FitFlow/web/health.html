@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - BMI & Health Analysis</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .bmi-spectrum {
+            display: flex;
+            height: 18px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 1.5rem 0 0.5rem 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .bmi-seg {
+            height: 100%;
+            transition: opacity 0.3s ease;
+        }
+        .seg-under { width: 18.5%; background: #38bdf8; }
+        .seg-norm { width: 32%; background: #10b981; }
+        .seg-over { width: 25%; background: #f59e0b; }
+        .seg-obese { width: 24.5%; background: #ef4444; }
+        .spectrum-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html">Dashboard</a></li>
+            <li><a href="/web/health.html" class="active">BMI & Health</a></li>
+            <li><a href="/web/hydration.html">Hydration</a></li>
+            <li><a href="/web/workout.html">Workouts</a></li>
+            <li><a href="/web/nutrition.html">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar">AR</div>
+            <span class="user-info-text">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Body Mass Index (BMI) & Biometrics</h1>
+                <p class="page-subtitle">WHO Clinical Classification calculated dynamically by Java <code>BMICalculator</code>.</p>
+            </div>
+            <a href="/web/profile.html" class="btn btn-secondary">Adjust Height/Weight ⚙</a>
+        </div>
+
+        <!-- Hero BMI Display Card -->
+        <div class="card glow-primary" style="margin-bottom: 2rem; padding: 2.5rem 2rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+                <div>
+                    <span class="card-title">Body Composition Metric</span>
+                    <div style="display: flex; align-items: baseline; gap: 1rem; margin: 0.5rem 0;">
+                        <span class="stat-value" id="health-bmi-val" style="font-size: 3.8rem;">--</span>
+                        <span class="badge" id="health-bmi-badge" style="font-size: 1.05rem; padding: 0.4rem 1rem;">Normal Weight</span>
+                    </div>
+                    <p style="color: var(--text-secondary); max-width: 600px; font-size: 1rem;" id="health-bmi-advice">
+                        Loading clinical recommendations from Java backend...
+                    </p>
+                </div>
+
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.5rem 2rem; min-width: 260px;">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Healthy Weight Range</div>
+                    <div style="font-family: 'Outfit', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--primary); margin: 0.25rem 0;" id="health-healthy-range">
+                        -- to -- kg
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                        Based on height: <strong id="health-height-val" style="color: var(--text-primary);">-- cm</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual BMI Spectrum Indicator -->
+            <div class="bmi-spectrum">
+                <div class="bmi-seg seg-under" title="Underweight (&lt; 18.5)"></div>
+                <div class="bmi-seg seg-norm" title="Normal (18.5 - 24.9)"></div>
+                <div class="bmi-seg seg-over" title="Overweight (25.0 - 29.9)"></div>
+                <div class="bmi-seg seg-obese" title="Obese (&gt;= 30.0)"></div>
+            </div>
+            <div class="spectrum-labels">
+                <span>Underweight (&lt; 18.5)</span>
+                <span>Normal (18.5 - 24.9)</span>
+                <span>Overweight (25 - 29.9)</span>
+                <span>Obese (&ge; 30)</span>
+            </div>
+        </div>
+
+        <!-- Interactive Weight Simulator (Evaluated in Java) -->
+        <div class="card" style="margin-bottom: 2rem; border-color: rgba(6, 182, 212, 0.3);">
+            <div class="card-header">
+                <span class="card-title">🔬 Interactive Weight & BMI Simulator (Pure Java Evaluation)</span>
+                <div class="card-icon icon-cyan">⚡</div>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+                Adjust the weight slider below to see how Java evaluates and re-classifies BMI in real-time. Demonstrates dynamic WHO boundary conditions during viva evaluation.
+            </p>
+            <div class="grid-2" style="margin-bottom: 0; align-items: center;">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <span style="font-size: 0.88rem; font-weight: 600; color: var(--text-secondary);">Simulated Body Weight</span>
+                        <span id="sim-weight-label" style="font-weight: 800; font-size: 1.25rem; color: var(--cyan);">70.0 kg</span>
+                    </div>
+                    <input type="range" id="sim-weight-slider" min="40" max="130" step="0.5" value="70" class="form-control" style="cursor: pointer;"
+                           oninput="onSimulateSliderChange(this.value)">
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">Simulated BMI Result</span>
+                        <div style="font-family: 'Outfit', sans-serif; font-size: 2rem; font-weight: 800;" id="sim-bmi-val">--</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="badge" id="sim-bmi-badge" style="font-size: 0.9rem; padding: 0.35rem 0.85rem;">Normal</span>
+                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.35rem;" id="sim-weight-diff">Healthy Range</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational & Academic Notes on BMI -->
+        <div class="grid-3">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Mathematical Formula</span>
+                    <div class="card-icon icon-emerald">📐</div>
+                </div>
+                <h4 style="margin-bottom: 0.5rem;">Quetelet Index (BMI)</h4>
+                <div style="background: rgba(0, 0, 0, 0.3); padding: 0.8rem; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.88rem; color: var(--primary); margin-bottom: 0.75rem;">
+                    BMI = Weight (kg) / [Height (m)]²
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Height is converted from centimeters to meters and squared. Handled directly by <code>BMICalculator.compute()</code>.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">OOP Architecture</span>
+                    <div class="card-icon icon-purple">🏗</div>
+                </div>
+                <h4 style="margin-bottom: 0.5rem;">Encapsulated Calculation</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                    Implements <code>HealthCalculator&lt;BMIResult&gt;</code> generic interface. Returns an immutable value object encapsulating value, WHO category, advice, and range.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Exception Safety</span>
+                    <div class="card-icon icon-amber">🛡</div>
+                </div>
+                <h4 style="margin-bottom: 0.5rem;">Invariant Validation</h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+                    Values of height or weight &le; 0 immediately throw <code>InvalidHealthDataException</code> in Java, preventing division by zero and bad state propagation.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; Java Health Calculator Module</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        let currentLoadedHeight = 175.0;
+
+        async function loadBmiPage() {
+            try {
+                const data = await apiCall('/bmi');
+                currentLoadedHeight = data.currentHeight || 175.0;
+                document.getElementById('health-bmi-val').textContent = data.bmiValue;
+                const badge = document.getElementById('health-bmi-badge');
+                badge.textContent = data.category;
+                badge.className = 'badge badge-' + data.category.toLowerCase();
+                badge.style.color = data.colorHex;
+
+                document.getElementById('health-bmi-advice').textContent = data.advice;
+                document.getElementById('health-healthy-range').textContent = `${data.minHealthyWeight} - ${data.maxHealthyWeight} kg`;
+                document.getElementById('health-height-val').textContent = `${currentLoadedHeight} cm`;
+
+                // Initialize slider
+                if (data.currentWeight) {
+                    const slider = document.getElementById('sim-weight-slider');
+                    slider.value = data.currentWeight;
+                    document.getElementById('sim-weight-label').textContent = `${data.currentWeight} kg`;
+                    onSimulateSliderChange(data.currentWeight);
+                }
+            } catch (err) {
+                console.error('Failed to load BMI data:', err);
+            }
+        }
+
+        let debounceTimer;
+        function onSimulateSliderChange(val) {
+            document.getElementById('sim-weight-label').textContent = `${parseFloat(val).toFixed(1)} kg`;
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(async () => {
+                try {
+                    const res = await apiCall(`/bmi/simulate?weight=${val}&height=${currentLoadedHeight}`);
+                    document.getElementById('sim-bmi-val').textContent = res.bmiValue;
+                    const badge = document.getElementById('sim-bmi-badge');
+                    badge.textContent = res.category;
+                    badge.className = 'badge badge-' + res.category.toLowerCase();
+                    badge.style.color = res.colorHex;
+
+                    const diffLabel = document.getElementById('sim-weight-diff');
+                    if (res.category === 'Normal') {
+                        diffLabel.textContent = '✓ Within WHO Healthy Range';
+                        diffLabel.style.color = '#10b981';
+                    } else if (res.category === 'Underweight') {
+                        const diff = (res.minHealthyWeight - val).toFixed(1);
+                        diffLabel.textContent = `Needs +${diff} kg for healthy zone`;
+                        diffLabel.style.color = '#38bdf8';
+                    } else {
+                        const diff = (val - res.maxHealthyWeight).toFixed(1);
+                        diffLabel.textContent = `${diff} kg above upper boundary`;
+                        diffLabel.style.color = '#f59e0b';
+                    }
+                } catch (e) {
+                    console.error('Simulation error:', e);
+                }
+            }, 80);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadBmiPage);
+    </script>
+</body>
+</html>

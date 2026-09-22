@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - User Profile Setup</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html">Dashboard</a></li>
+            <li><a href="/web/health.html">BMI & Health</a></li>
+            <li><a href="/web/hydration.html">Hydration</a></li>
+            <li><a href="/web/workout.html">Workouts</a></li>
+            <li><a href="/web/nutrition.html">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar">AR</div>
+            <span class="user-info-text">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container" style="max-width: 820px;">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Personal Biometric Profile</h1>
+                <p class="page-subtitle">Configure your physical parameters to calibrate Java metabolic and fitness engines.</p>
+            </div>
+            <a href="/web/dashboard.html" class="btn btn-secondary">← Back to Dashboard</a>
+        </div>
+
+        <!-- Quick Viva Persona Presets -->
+        <div class="card" style="padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.25);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem;">
+                <span style="font-size: 0.8rem; font-weight: 700; color: #a5b4fc; text-transform: uppercase; letter-spacing: 0.5px;">
+                    🎓 Quick Viva Demonstration Presets (1-Click Fill)
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Instantly test how Java engines adapt</span>
+            </div>
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+                <button type="button" class="btn btn-secondary btn-sm" onclick="applyPreset('alex')">
+                    🏋️ Alex (Hypertrophy M, 21y)
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="applyPreset('maya')">
+                    🏃‍♀️ Maya (Weight Loss F, 24y)
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="applyPreset('sam')">
+                    ⚡ Sam (High Performance M, 20y)
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" onclick="applyPreset('taylor')">
+                    🧘 Taylor (Maintenance, 26y)
+                </button>
+            </div>
+        </div>
+
+        <div class="card" style="padding: 2.2rem;">
+            <form id="profile-form">
+                <div class="grid-2" style="margin-bottom: 0;">
+                    <!-- Full Name -->
+                    <div class="form-group">
+                        <label class="form-label" for="userName">Athlete Name</label>
+                        <input type="text" id="userName" class="form-control" placeholder="e.g. Jordan Smith" required>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="form-group">
+                        <label class="form-label" for="userAge">Age (Years)</label>
+                        <input type="number" id="userAge" class="form-control" min="10" max="120" placeholder="e.g. 21" required>
+                    </div>
+                </div>
+
+                <div class="grid-3" style="margin-bottom: 0;">
+                    <!-- Gender -->
+                    <div class="form-group">
+                        <label class="form-label" for="userGender">Biological Gender</label>
+                        <select id="userGender" class="form-control">
+                            <option value="MALE">Male (Mifflin +5 BMR offset)</option>
+                            <option value="FEMALE">Female (Mifflin -161 BMR offset)</option>
+                            <option value="OTHER">Other / Non-Binary</option>
+                        </select>
+                    </div>
+
+                    <!-- Height -->
+                    <div class="form-group">
+                        <label class="form-label" for="userHeight">Height (cm)</label>
+                        <input type="number" step="0.5" id="userHeight" class="form-control" min="50" max="260" placeholder="e.g. 175" required>
+                    </div>
+
+                    <!-- Weight -->
+                    <div class="form-group">
+                        <label class="form-label" for="userWeight">Weight (kg)</label>
+                        <input type="number" step="0.5" id="userWeight" class="form-control" min="20" max="350" placeholder="e.g. 68.5" required>
+                    </div>
+                </div>
+
+                <!-- Activity Level -->
+                <div class="form-group">
+                    <label class="form-label">Physical Activity Level</label>
+                    <div class="pill-group" id="activity-group">
+                        <div class="pill-option" data-value="SEDENTARY">Sedentary (Desk job / No exercise)</div>
+                        <div class="pill-option" data-value="LIGHTLY_ACTIVE">Lightly Active (1-3 days/wk)</div>
+                        <div class="pill-option active" data-value="MODERATELY_ACTIVE">Moderately Active (3-5 days/wk)</div>
+                        <div class="pill-option" data-value="VERY_ACTIVE">Very Active (6-7 days/wk intense)</div>
+                    </div>
+                    <input type="hidden" id="userActivity" value="MODERATELY_ACTIVE">
+                </div>
+
+                <!-- Fitness Goal -->
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-label">Primary Fitness Goal</label>
+                    <div class="pill-group" id="goal-group">
+                        <div class="pill-option" data-value="WEIGHT_LOSS">Weight Loss (-500 kcal deficit)</div>
+                        <div class="pill-option" data-value="WEIGHT_GAIN">Weight Gain (+450 kcal surplus)</div>
+                        <div class="pill-option active" data-value="MUSCLE_BUILDING">Muscle Building (+300 kcal hypertrophy)</div>
+                        <div class="pill-option" data-value="GENERAL_FITNESS">General Fitness (Equilibrium)</div>
+                        <div class="pill-option" data-value="MAINTENANCE">Maintenance (Neutral)</div>
+                    </div>
+                    <input type="hidden" id="userGoal" value="MUSCLE_BUILDING">
+                </div>
+
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1rem;">
+                        Save Profile & Recalculate in Java
+                    </button>
+                    <span id="save-status" style="font-size: 0.9rem; color: var(--primary);"></span>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; Java-Powered Profile Validation</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        // Setup interactive pill selectors
+        function initPillGroup(groupId, hiddenInputId) {
+            const container = document.getElementById(groupId);
+            const hiddenInput = document.getElementById(hiddenInputId);
+            const pills = container.querySelectorAll('.pill-option');
+
+            pills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    pills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    hiddenInput.value = pill.getAttribute('data-value');
+                });
+            });
+        }
+
+        initPillGroup('activity-group', 'userActivity');
+        initPillGroup('goal-group', 'userGoal');
+
+        // Load existing profile from Java backend
+        async function loadProfile() {
+            try {
+                const data = await apiCall('/dashboard');
+                if (data.userName) document.getElementById('userName').value = data.userName;
+                if (data.age) document.getElementById('userAge').value = data.age;
+                if (data.gender) {
+                    const sel = document.getElementById('userGender');
+                    for (let opt of sel.options) {
+                        if (opt.text.toLowerCase().includes(data.gender.toLowerCase())) {
+                            sel.value = opt.value;
+                            break;
+                        }
+                    }
+                }
+                if (data.heightCm) document.getElementById('userHeight').value = data.heightCm;
+                if (data.weightKg) document.getElementById('userWeight').value = data.weightKg;
+
+                // Sync activity
+                if (data.activityLevel) {
+                    const pills = document.querySelectorAll('#activity-group .pill-option');
+                    pills.forEach(p => {
+                        if (p.textContent.toLowerCase().includes(data.activityLevel.toLowerCase())) {
+                            pills.forEach(x => x.classList.remove('active'));
+                            p.classList.add('active');
+                            document.getElementById('userActivity').value = p.getAttribute('data-value');
+                        }
+                    });
+                }
+
+                // Sync goal
+                if (data.fitnessGoal) {
+                    const pills = document.querySelectorAll('#goal-group .pill-option');
+                    pills.forEach(p => {
+                        if (p.textContent.toLowerCase().includes(data.fitnessGoal.toLowerCase())) {
+                            pills.forEach(x => x.classList.remove('active'));
+                            p.classList.add('active');
+                            document.getElementById('userGoal').value = p.getAttribute('data-value');
+                        }
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not prefill profile:', e);
+            }
+        }
+
+        // Form Submit -> Post to Java backend for strict validation & computation
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('userName').value.trim(),
+                age: parseInt(document.getElementById('userAge').value),
+                gender: document.getElementById('userGender').value,
+                height: parseFloat(document.getElementById('userHeight').value),
+                weight: parseFloat(document.getElementById('userWeight').value),
+                activityLevel: document.getElementById('userActivity').value,
+                fitnessGoal: document.getElementById('userGoal').value
+            };
+
+            try {
+                const result = await apiCall('/profile', 'POST', payload);
+                showToast('Profile updated & validated by Java successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = '/web/dashboard.html';
+                }, 1000);
+            } catch (err) {
+                // Error handled and shown via showToast() in app.js
+            }
+        });
+
+        function applyPreset(preset) {
+            const presets = {
+                alex: {
+                    name: 'Alex Rivers', age: 21, gender: 'MALE', height: 175.0, weight: 68.0,
+                    activity: 'MODERATELY_ACTIVE', goal: 'MUSCLE_BUILDING'
+                },
+                maya: {
+                    name: 'Maya Chen', age: 24, gender: 'FEMALE', height: 165.0, weight: 72.0,
+                    activity: 'LIGHTLY_ACTIVE', goal: 'WEIGHT_LOSS'
+                },
+                sam: {
+                    name: 'Sam Miller', age: 20, gender: 'MALE', height: 180.0, weight: 75.0,
+                    activity: 'VERY_ACTIVE', goal: 'GENERAL_FITNESS'
+                },
+                taylor: {
+                    name: 'Taylor Brooks', age: 26, gender: 'OTHER', height: 170.0, weight: 62.0,
+                    activity: 'SEDENTARY', goal: 'MAINTENANCE'
+                }
+            };
+
+            const p = presets[preset];
+            if (!p) return;
+
+            document.getElementById('userName').value = p.name;
+            document.getElementById('userAge').value = p.age;
+            document.getElementById('userGender').value = p.gender;
+            document.getElementById('userHeight').value = p.height;
+            document.getElementById('userWeight').value = p.weight;
+
+            // Update activity pills
+            document.querySelectorAll('#activity-group .pill-option').forEach(pill => {
+                pill.classList.remove('active');
+                if (pill.getAttribute('data-value') === p.activity) {
+                    pill.classList.add('active');
+                    document.getElementById('userActivity').value = p.activity;
+                }
+            });
+
+            // Update goal pills
+            document.querySelectorAll('#goal-group .pill-option').forEach(pill => {
+                pill.classList.remove('active');
+                if (pill.getAttribute('data-value') === p.goal) {
+                    pill.classList.add('active');
+                    document.getElementById('userGoal').value = p.goal;
+                }
+            });
+
+            showToast(`Loaded ${p.name} preset! Click 'Save Profile' to execute in Java.`, 'info');
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProfile);
+    </script>
+</body>
+</html>

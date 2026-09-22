@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - Interactive Hydration Tracker</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html">Dashboard</a></li>
+            <li><a href="/web/health.html">BMI & Health</a></li>
+            <li><a href="/web/hydration.html" class="active">Hydration</a></li>
+            <li><a href="/web/workout.html">Workouts</a></li>
+            <li><a href="/web/nutrition.html">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar">AR</div>
+            <span class="user-info-text">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <div class="page-header">
+            <div>
+                <h1 class="page-title">Interactive Hydration Tracker</h1>
+                <p class="page-subtitle">Dynamic water requirement algorithm calculated in Java based on body mass and activity multiplier.</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="promptCustomTarget()">Set Custom Target 🎯</button>
+        </div>
+
+        <!-- Hero Tracker Section -->
+        <div class="grid-2">
+            <!-- Left: Interactive Gauge & Logging Controls -->
+            <div class="card glow-primary" style="text-align: center; padding: 2.5rem 2rem;">
+                <div class="circle-progress-wrapper" style="width: 200px; height: 200px; margin-bottom: 1.5rem;">
+                    <svg class="circle-progress-svg" width="200" height="200">
+                        <circle class="circle-bg" cx="100" cy="100" r="82" style="stroke-width: 14;"></circle>
+                        <circle class="circle-bar" id="water-circle-bar" cx="100" cy="100" r="82"
+                                style="stroke-width: 14; stroke-dasharray: 515; stroke-dashoffset: 515; stroke: #06b6d4;"></circle>
+                    </svg>
+                    <div class="circle-inner-text">
+                        <div class="circle-pct" id="water-pct-display" style="font-size: 2.4rem; color: #06b6d4;">0%</div>
+                        <div class="circle-label">OF DAILY TARGET</div>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.25rem;">
+                    <span id="water-consumed-liters">0.0</span> / <span id="water-target-liters">2.5</span> Liters
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.75rem;">
+                    <strong id="water-remaining-liters" style="color: #38bdf8;">--</strong> remaining to hit optimal hydration.
+                </p>
+
+                <!-- Action Buttons: Calling Java Endpoints -->
+                <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="addWaterGlass()">
+                        + 1 Glass (250 ml) 🥛
+                    </button>
+                    <button class="btn btn-secondary" onclick="addWaterBottle()">
+                        + 1 Bottle (500 ml) 🧴
+                    </button>
+                    <button class="btn btn-secondary" onclick="promptCustomWater()">
+                        + Custom ml ➕
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="resetWaterLog()" title="Reset for new day">
+                        Reset ↺
+                    </button>
+                </div>
+
+                <!-- Interactive Visual Glasses Grid -->
+                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.25rem;">
+                    <span style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; display: block; margin-bottom: 0.75rem;">
+                        Target Visualizer (<span id="glasses-visual-count">0/12</span> Glasses)
+                    </span>
+                    <div id="glasses-grid" style="display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;">
+                        <!-- Rendered by JS based on Java state -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Breakdown Metrics & Formula Cards -->
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Breakdown Metric Cards -->
+                <div class="grid-2" style="margin-bottom: 0;">
+                    <div class="card" style="padding: 1.25rem;">
+                        <span class="card-title">Glasses Consumed</span>
+                        <div class="stat-value" style="font-size: 2rem; color: var(--primary);" id="water-glasses-consumed">0</div>
+                        <div class="stat-desc">Standard 250ml units</div>
+                    </div>
+                    <div class="card" style="padding: 1.25rem;">
+                        <span class="card-title">Glasses Remaining</span>
+                        <div class="stat-value" style="font-size: 2rem; color: var(--amber);" id="water-glasses-remaining">--</div>
+                        <div class="stat-desc">To reach baseline</div>
+                    </div>
+                </div>
+
+                <!-- Java Formula Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Java Calculation Model</span>
+                        <div class="card-icon icon-cyan">🔬</div>
+                    </div>
+                    <h4 style="margin-bottom: 0.5rem;">Activity-Adjusted Water Equation</h4>
+                    <div style="background: rgba(0, 0, 0, 0.3); padding: 0.85rem; border-radius: var(--radius-sm); font-family: monospace; font-size: 0.88rem; color: #06b6d4; margin-bottom: 0.75rem;">
+                        Target (ml) = Body Weight (kg) × 35 ml × ActivityMultiplier
+                    </div>
+                    <ul style="color: var(--text-secondary); font-size: 0.85rem; padding-left: 1.2rem; line-height: 1.6;">
+                        <li><strong>Sedentary:</strong> × 1.0 (baseline cellular hydration)</li>
+                        <li><strong>Lightly Active:</strong> × 1.1 (+10% metabolic fluid exchange)</li>
+                        <li><strong>Moderately Active:</strong> × 1.2 (+20% sweat & recovery replenishment)</li>
+                        <li><strong>Very Active:</strong> × 1.35 (+35% intense athletic fluid loss)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; Java HydrationTracker & WaterIntakeCalculator</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadHydrationData() {
+            try {
+                const data = await apiCall('/water');
+                
+                document.getElementById('water-consumed-liters').textContent = data.consumedLiters;
+                document.getElementById('water-target-liters').textContent = data.targetLiters;
+                document.getElementById('water-remaining-liters').textContent = `${data.remainingLiters} L (${data.remainingMl} ml)`;
+                
+                const pct = Math.min(100, Math.round(data.progressPercent || 0));
+                document.getElementById('water-pct-display').textContent = `${pct}%`;
+                
+                // Update SVG Circle Progress
+                // Circumference = 2 * PI * 82 ~ 515
+                const circ = 515;
+                const offset = circ - (circ * pct / 100);
+                document.getElementById('water-circle-bar').style.strokeDashoffset = offset;
+
+                document.getElementById('water-glasses-consumed').textContent = data.glassesConsumed;
+                document.getElementById('water-glasses-remaining').textContent = data.glassesRemaining;
+
+                // Render dynamic visual glasses grid
+                const grid = document.getElementById('glasses-grid');
+                if (grid) {
+                    grid.innerHTML = '';
+                    const totalTarget = data.targetGlasses || 10;
+                    const consumed = data.glassesConsumed || 0;
+                    document.getElementById('glasses-visual-count').textContent = `${consumed}/${totalTarget}`;
+
+                    for (let i = 1; i <= totalTarget; i++) {
+                        const glass = document.createElement('div');
+                        const isDone = i <= consumed;
+                        glass.style.cssText = `
+                            width: 38px; height: 48px; border-radius: 4px 4px 8px 8px;
+                            display: flex; flex-direction: column; align-items: center; justify-content: center;
+                            cursor: pointer; transition: all 0.3s ease;
+                            border: 2px solid ${isDone ? '#06b6d4' : 'rgba(255,255,255,0.15)'};
+                            background: ${isDone ? 'rgba(6, 182, 212, 0.25)' : 'rgba(255,255,255,0.03)'};
+                            box-shadow: ${isDone ? '0 0 12px rgba(6, 182, 212, 0.35)' : 'none'};
+                            font-size: 0.7rem; font-weight: 700; color: ${isDone ? '#fff' : 'var(--text-muted)'};
+                        `;
+                        glass.title = `Glass ${i} (250 ml) - ${isDone ? 'Consumed' : 'Remaining'}`;
+                        glass.innerHTML = `${isDone ? '💧' : i}`;
+                        if (!isDone && i === consumed + 1) {
+                            glass.style.borderColor = 'rgba(6, 182, 212, 0.6)';
+                            glass.onclick = () => addWaterGlass();
+                        }
+                        grid.appendChild(glass);
+                    }
+                }
+            } catch (e) {
+                console.error('Failed to load hydration:', e);
+            }
+        }
+
+        async function addWaterGlass() {
+            try {
+                await apiCall('/water/add-glass', 'POST');
+                showToast('+250 ml glass logged in Java!', 'success');
+                loadHydrationData();
+            } catch (e) {}
+        }
+
+        async function addWaterBottle() {
+            try {
+                await apiCall('/water/add-custom', 'POST', { amountMl: 500 });
+                showToast('+500 ml bottle logged in Java!', 'success');
+                loadHydrationData();
+            } catch (e) {}
+        }
+
+        async function promptCustomWater() {
+            const input = prompt('Enter water amount in milliliters (ml):', '300');
+            if (input && !isNaN(input)) {
+                try {
+                    await apiCall('/water/add-custom', 'POST', { amountMl: parseInt(input) });
+                    showToast(`+${input} ml logged in Java!`, 'success');
+                    loadHydrationData();
+                } catch (e) {}
+            }
+        }
+
+        async function promptCustomTarget() {
+            const input = prompt('Enter your personalized daily water target in ml (e.g. 2800):', '2500');
+            if (input && !isNaN(input)) {
+                try {
+                    await apiCall('/water/target', 'POST', { targetMl: parseInt(input) });
+                    showToast(`Daily water target updated in Java to ${input} ml!`, 'success');
+                    loadHydrationData();
+                } catch (e) {}
+            }
+        }
+
+        async function resetWaterLog() {
+            if (confirm('Are you sure you want to reset your consumed water count for today?')) {
+                try {
+                    await apiCall('/water/reset', 'POST');
+                    showToast('Daily water counter reset in Java.', 'info');
+                    loadHydrationData();
+                } catch (e) {}
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadHydrationData);
+    </script>
+</body>
+</html>

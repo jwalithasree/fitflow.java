@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitFlow - Fitness Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="navbar">
+        <a href="/web/index.html" class="nav-brand">
+            <div class="brand-icon">⚡</div>
+            <div class="brand-text">FitFlow</div>
+            <span class="brand-badge">AOP Core</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="/web/dashboard.html" class="active">Dashboard</a></li>
+            <li><a href="/web/health.html">BMI & Health</a></li>
+            <li><a href="/web/hydration.html">Hydration</a></li>
+            <li><a href="/web/workout.html">Workouts</a></li>
+            <li><a href="/web/nutrition.html">Nutrition</a></li>
+            <li><a href="/web/wellness.html">Wellness</a></li>
+        </ul>
+        <div class="user-badge">
+            <div class="user-avatar" id="nav-avatar">AR</div>
+            <span class="user-info-text" id="nav-user-name">Alex Rivers</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Dashboard Greeting Header -->
+        <div class="page-header">
+            <div>
+                <div class="badge badge-normal" style="margin-bottom: 0.5rem;" id="dash-goal-badge">
+                    Muscle Building
+                </div>
+                <h1 class="page-title">Welcome back, <span id="dash-user-name" style="color: var(--primary);">Alex</span>! 👋</h1>
+                <p class="page-subtitle">Here is your daily physiological overview, computed live by Java backend engines.</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="window.print()">Print Report 🖨️</button>
+                <a href="/web/profile.html" class="btn btn-secondary">Edit Profile ⚙</a>
+                <a href="/web/workout.html" class="btn btn-primary">Start Workout ⚡</a>
+            </div>
+        </div>
+
+        <!-- 4 Primary Metric Cards (BMI, Water, Calories, Weight) -->
+        <div class="grid-4">
+            <!-- 1. BMI Card -->
+            <div class="card glow-primary">
+                <div class="card-header">
+                    <span class="card-title">Body Mass Index</span>
+                    <div class="card-icon icon-emerald">⚖</div>
+                </div>
+                <div class="stat-value" id="dash-bmi-val">--</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
+                    <span class="badge" id="dash-bmi-badge">Normal</span>
+                    <span class="stat-desc" id="dash-bmi-range">Range: 18.5 - 24.9</span>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <a href="/web/health.html" style="color: var(--primary); font-size: 0.82rem; text-decoration: none; font-weight: 600;">
+                        View BMI Health Breakdown →
+                    </a>
+                </div>
+            </div>
+
+            <!-- 2. Water Target Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Daily Hydration</span>
+                    <div class="card-icon icon-cyan">💧</div>
+                </div>
+                <div class="stat-value">
+                    <span id="dash-water-target">--</span><span class="stat-unit">L</span>
+                </div>
+                <div class="stat-desc" id="dash-water-desc">Recommended Daily Target</div>
+                <div class="progress-container">
+                    <div class="progress-fill progress-cyan" id="dash-water-prog" style="width: 0%;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+                    <span id="dash-water-consumed">0.0 L logged</span>
+                    <span id="dash-water-pct">0%</span>
+                </div>
+            </div>
+
+            <!-- 3. Calories Target Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Daily Calorie Target</span>
+                    <div class="card-icon icon-amber">🔥</div>
+                </div>
+                <div class="stat-value">
+                    <span id="dash-cal-target">--</span><span class="stat-unit">kcal</span>
+                </div>
+                <div class="stat-desc" id="dash-cal-desc">Estimated Daily Energy Intake</div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem; font-size: 0.8rem;">
+                    <span class="badge badge-normal" id="dash-macro-p">P: --g</span>
+                    <span class="badge badge-underweight" id="dash-macro-c">C: --g</span>
+                    <span class="badge badge-overweight" id="dash-macro-f">F: --g</span>
+                </div>
+            </div>
+
+            <!-- 4. Body Metrics (Weight & Height) -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Current Biometrics</span>
+                    <div class="card-icon icon-purple">📏</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <div>
+                        <div class="stat-value"><span id="dash-weight">--</span><span class="stat-unit">kg</span></div>
+                        <div class="stat-desc">Body Weight</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="stat-value" style="font-size: 1.8rem;"><span id="dash-height">--</span><span class="stat-unit">cm</span></div>
+                        <div class="stat-desc">Height</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1.15rem; font-size: 0.85rem; color: var(--text-secondary);">
+                    Activity: <strong id="dash-activity" style="color: var(--text-primary);">--</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Secondary Section: Wellness Score & Quick Java Actions -->
+        <div class="grid-2">
+            <!-- Wellness & Recovery Widget -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Holistic Wellness & Recovery</span>
+                    <div class="card-icon icon-blue">🌿</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 1.5rem;">
+                    <div class="circle-progress-wrapper" style="width: 120px; height: 120px;">
+                        <svg class="circle-progress-svg" width="120" height="120">
+                            <circle class="circle-bg" cx="60" cy="60" r="48" style="stroke-width: 10;"></circle>
+                            <circle class="circle-bar" id="dash-wellness-circle" cx="60" cy="60" r="48" style="stroke-width: 10; stroke-dasharray: 301; stroke-dashoffset: 301; stroke: #3b82f6;"></circle>
+                        </svg>
+                        <div class="circle-inner-text">
+                            <div class="circle-pct" id="dash-wellness-score" style="font-size: 1.5rem;">--</div>
+                            <div class="circle-label" style="font-size: 0.65rem;">SCORE</div>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="badge badge-normal" id="dash-readiness-badge" style="margin-bottom: 0.4rem;">
+                            Optimal Recovery
+                        </span>
+                        <h4 style="font-size: 1.05rem; margin-bottom: 0.35rem;" id="dash-wellness-summary">Steady physiological state</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.4;" id="dash-wellness-advice">
+                            Sleep and autonomic stress metrics are balanced.
+                        </p>
+                    </div>
+                </div>
+                <div style="margin-top: 1.25rem;">
+                    <a href="/web/wellness.html" class="btn btn-secondary btn-sm">Update Wellness Log →</a>
+                </div>
+            </div>
+
+            <!-- Quick Action Shortcuts -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">Quick Health Actions</span>
+                    <div class="card-icon icon-coral">⚡</div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+                        <div>
+                            <strong style="display: block; font-size: 0.95rem;">Quick Water Log</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Add +250 ml glass to Java tracker</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="quickLogWater()">+ Glass 💧</button>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+                        <div>
+                            <strong style="display: block; font-size: 0.95rem;">Tailored Workout</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Generate polymorphic routine in Java</span>
+                        </div>
+                        <a href="/web/workout.html" class="btn btn-secondary btn-sm">Generate 🏋️</a>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.03); border-radius: var(--radius-md);">
+                        <div>
+                            <strong style="display: block; font-size: 0.95rem;">Nutritional Blueprint</strong>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">View goal meal plan & protein targets</span>
+                        </div>
+                        <a href="/web/nutrition.html" class="btn btn-secondary btn-sm">View Plan 🥗</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>FitFlow &copy; 2026 Academic AOP Project &bull; 100% Java-Calculated Health Analytics</p>
+    </footer>
+
+    <script src="/js/app.js"></script>
+    <script>
+        async function loadDashboard() {
+            try {
+                const data = await apiCall('/dashboard');
+                
+                // User & Goal
+                document.getElementById('dash-user-name').textContent = data.userName;
+                document.getElementById('nav-user-name').textContent = data.userName;
+                const initials = data.userName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                document.getElementById('nav-avatar').textContent = initials;
+                
+                document.getElementById('dash-goal-badge').textContent = data.fitnessGoal;
+                document.getElementById('dash-activity').textContent = data.activityLevel;
+                document.getElementById('dash-weight').textContent = data.weightKg;
+                document.getElementById('dash-height').textContent = data.heightCm;
+
+                // BMI Card
+                if (data.bmi) {
+                    document.getElementById('dash-bmi-val').textContent = data.bmi.value;
+                    const badge = document.getElementById('dash-bmi-badge');
+                    badge.textContent = data.bmi.category;
+                    badge.className = 'badge badge-' + data.bmi.category.toLowerCase();
+                    badge.style.color = data.bmi.colorHex;
+                    document.getElementById('dash-bmi-range').textContent = `Healthy: ${data.bmi.minHealthyWeight} - ${data.bmi.maxHealthyWeight} kg`;
+                }
+
+                // Water Card
+                if (data.water) {
+                    document.getElementById('dash-water-target').textContent = data.water.targetLiters;
+                    const pct = Math.min(100, Math.round(data.water.progressPercent || 0));
+                    document.getElementById('dash-water-prog').style.width = pct + '%';
+                    document.getElementById('dash-water-pct').textContent = pct + '%';
+                    document.getElementById('dash-water-consumed').textContent = `${data.water.consumedLiters || 0} L consumed`;
+                }
+
+                // Calorie Card
+                if (data.calories) {
+                    document.getElementById('dash-cal-target').textContent = data.calories.targetCalories.toLocaleString();
+                    document.getElementById('dash-macro-p').textContent = `P: ${data.calories.proteinGrams}g`;
+                    document.getElementById('dash-macro-c').textContent = `C: ${data.calories.carbGrams}g`;
+                    document.getElementById('dash-macro-f').textContent = `F: ${data.calories.fatGrams}g`;
+                }
+
+                // Wellness Widget
+                if (data.wellness) {
+                    const score = data.wellness.score || 75;
+                    document.getElementById('dash-wellness-score').textContent = score;
+                    document.getElementById('dash-readiness-badge').textContent = data.wellness.readiness || 'Optimal';
+                    
+                    // Update circular progress stroke
+                    // Circumference = 2 * PI * 48 ~ 301
+                    const circumference = 301;
+                    const offset = circumference - (circumference * score / 100);
+                    document.getElementById('dash-wellness-circle').style.strokeDashoffset = offset;
+                }
+            } catch (err) {
+                console.error('Failed to load dashboard:', err);
+            }
+        }
+
+        async function quickLogWater() {
+            try {
+                await apiCall('/water/add-glass', 'POST');
+                showToast('+250 ml glass logged in Java!', 'success');
+                loadDashboard();
+            } catch (e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
