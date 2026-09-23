@@ -20,6 +20,12 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         int port = FitFlowServer.DEFAULT_PORT;
+        String envPort = System.getenv("PORT");
+        if (envPort != null && !envPort.trim().isEmpty()) {
+            try {
+                port = Integer.parseInt(envPort.trim());
+            } catch (NumberFormatException ignored) {}
+        }
         if (args.length > 0) {
             try {
                 port = Integer.parseInt(args[0]);
